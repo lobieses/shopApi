@@ -1,0 +1,24 @@
+input PutUpLotInput {
+    lotName: String!
+    quantity: Int!
+}
+
+input GeLotsListInput {
+    sellerId: Int
+}
+
+type Lot {
+    id: Int!
+    lotName: String!
+    sellerId: Int!
+    sellerName: String!
+    quantity: Int!
+}
+
+type Query {
+    getLotsList(data: GeLotsListInput): [Lot!]!
+}
+
+type Mutation {
+    putUpLot(data: PutUpLotInput!): Lot!
+}

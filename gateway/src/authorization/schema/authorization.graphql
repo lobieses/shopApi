@@ -1,0 +1,29 @@
+input SignUpInput {
+    name: String!
+    password: String!
+    kind: Kinds!
+}
+
+input SignInInput {
+    name: String!
+    password: String!
+}
+
+enum Kinds {
+    salesman
+    buyer
+}
+
+type SignRes {
+    access_token: String!
+}
+
+type Query {
+    signIn(data: SignInInput!): SignRes!
+    logout: Boolean
+    refresh: SignRes!
+}
+
+type Mutation {
+    signUp(data: SignUpInput!): SignRes!
+}

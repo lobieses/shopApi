@@ -1,0 +1,8 @@
+input GetPaymentCheckoutSessionInput {
+    lotId: Int!
+    quantity: Int!
+}
+
+type Query {
+    getPaymentCheckoutSession(data: GetPaymentCheckoutSessionInput!): String!
+}
