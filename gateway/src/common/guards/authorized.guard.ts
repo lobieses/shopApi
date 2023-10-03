@@ -2,8 +2,12 @@ import { CanActivate, Injectable, UnauthorizedException } from '@nestjs/common';
 import { RpcHandlerSvc } from '../../rpc/services/rpc-handler.service';
 import { map, Observable } from 'rxjs';
 import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
-import { IAccessToken, ITokenPayload } from '../../authorization/types';
 import { SERVICE_NAMES } from '../../rpc/config/services';
+import { ENDPOINTS } from '../../rpc/endpoints';
+import {
+  IValidateAccessReq,
+  IValidateAccessRes,
+} from '../../rpc/endpoint.types';
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate {
@@ -17,9 +21,9 @@ export class AuthorizedGuard implements CanActivate {
     if (!access_token) throw new UnauthorizedException();
 
     return this.rpcHandlerSvc
-      .sendMessage<ITokenPayload, IAccessToken>(
+      .sendMessage<IValidateAccessRes, IValidateAccessReq>(
         SERVICE_NAMES.AUTHORIZATION,
-        'validate-access',
+        ENDPOINTS.MESSAGES.AUTHORIZATION.VALIDATE_ACCESS,
         {
           access_token: access_token.split(' ')[1],
         },

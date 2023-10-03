@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Products } from '@prisma/client';
+import { Prisma, Products } from '@prisma/client';
 
 interface IProductsService {
   getLotsList: (where: any) => Promise<Products[]>;
@@ -9,8 +9,11 @@ interface IProductsService {
     userId: number,
     sellerName: string,
     lotName: string,
+    cost: number,
     quantity: number,
   ) => Promise<Products>;
+
+  changeLotQuantity: (lotId: number, changeNum: number) => Promise<Products>;
 }
 
 @Injectable()
@@ -29,10 +32,23 @@ export class ProductsService implements IProductsService {
     sellerId: number,
     sellerName: string,
     lotName: string,
+    cost: number,
     quantity: number,
   ) {
     return this.prisma.products.create({
-      data: { sellerId, sellerName, lotName, quantity },
+      data: { sellerId, sellerName, lotName, cost, quantity },
     });
+  }
+
+  public async changeLotQuantity(lotId: number, changeNum: number) {
+    return this.prisma.$executeTransaction(
+      Prisma.TransactionIsolationLevel.Serializable,
+      (prisma) => {
+        return prisma.products.update({
+          where: { id: lotId },
+          data: { quantity: { increment: changeNum } },
+        });
+      },
+    );
   }
 }

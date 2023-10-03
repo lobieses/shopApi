@@ -7,12 +7,13 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "start:dev": "yarn generate:graphql && nest start --watch",
+    "start:debug": "yarn generate:graphql && nest start --debug --watch",
+    "start:prod": "yarn generate:graphql && node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "generate:graphql": "ts-node ./scripts/generate-graphql-types"
   },
   "dependencies": {
     "@apollo/server": "^4.9.2",
@@ -30,6 +31,7 @@
     "graphql": "^16.8.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
+    "stripe": "^13.7.0",
     "ts-morph": "^19.0.0"
   },
   "devDependencies": {

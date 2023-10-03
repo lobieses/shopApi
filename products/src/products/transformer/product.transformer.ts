@@ -11,24 +11,26 @@ interface IProductsTransformerService {
 export class ProductsTransformerService implements IProductsTransformerService {
   public toLotsList(data: Products[]) {
     return data.map<ILotResponse>(
-      ({ id, lotName, sellerId, sellerName, quantity }) => ({
+      ({ id, lotName, sellerId, sellerName, quantity, cost }) => ({
         id,
         lotName,
         sellerId,
         sellerName,
+        cost: cost.toNumber(),
         quantity,
       }),
     );
   }
 
   public toLot(data: Products) {
-    const { id, lotName, sellerId, sellerName, quantity } = data;
+    const { id, lotName, sellerId, sellerName, cost, quantity } = data;
 
     return {
       id,
       lotName,
       sellerId,
       sellerName,
+      cost: cost.toNumber(),
       quantity,
     } as ILotResponse;
   }

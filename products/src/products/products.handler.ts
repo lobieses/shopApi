@@ -6,13 +6,16 @@ import { ILotResponse } from './transformer/output.types';
 import { ProductsTransformerService } from './transformer/product.transformer';
 import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
 import { SERVICE_NAMES } from '../rpc/config/services';
-import { ILotCreatedEventPayload } from './types';
 import { GetLotDto } from './dtos/get-lot.dto';
+import { ChangeQuantityDto } from './dtos/change-quantity.dto';
+import { ENDPOINTS } from '../rpc/endpoints';
+import { ILotCreatedEventReq } from '../rpc/endpoint.types';
 
 interface IProductsHandler {
   getLotsList: (data: GetLotsListDto) => Promise<ILotResponse[]>;
   getLot: (data: GetLotDto) => Promise<ILotResponse | null>;
   createLot: (data: PutUpLotDto) => Promise<ILotResponse>;
+  changeQuantity: (data: ChangeQuantityDto) => Promise<ILotResponse>;
 }
 
 @Injectable()
@@ -45,6 +48,7 @@ export class ProductsHandler implements IProductsHandler {
     const {
       user: { id: sellerId, name: sellerName },
       lotName,
+      cost,
       quantity,
     } = data;
 
@@ -52,15 +56,27 @@ export class ProductsHandler implements IProductsHandler {
       sellerId,
       sellerName,
       lotName,
+      +cost,
       quantity,
     );
 
-    this.rpcHandlerSvc.emitEvent<ILotCreatedEventPayload>(
+    this.rpcHandlerSvc.emitEvent<ILotCreatedEventReq>(
       [SERVICE_NAMES.PAYMENTS],
-      'payments.event.lot-created',
-      { lotId: createdLot.id, lotName: createdLot.lotName, costInUsd: 1 },
+      ENDPOINTS.EVENTS.PAYMENTS.LOT_CREATED,
+      { lotId: createdLot.id, lotName: createdLot.lotName, costInUsd: cost },
     );
 
     return this.productsTransformerService.toLot(createdLot);
+  }
+
+  public async changeQuantity(data: ChangeQuantityDto) {
+    const { lotId, changeNum } = data;
+
+    const updatedLot = await this.productsService.changeLotQuantity(
+      lotId,
+      changeNum,
+    );
+
+    return this.productsTransformerService.toLot(updatedLot);
   }
 }

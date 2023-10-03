@@ -7,7 +7,11 @@ import {
 import { RpcHandlerSvc } from '../../rpc/services/rpc-handler.service';
 import { map } from 'rxjs';
 import { SERVICE_NAMES } from '../../rpc/config/services';
-import { IAccessToken, ITokenPayload } from '../types';
+import {
+  IValidateAccessReq,
+  IValidateAccessRes,
+} from '../../rpc/endpoint.types';
+import { ENDPOINTS } from '../../rpc/endpoints';
 
 @Injectable()
 export class AuthorizedGuard implements CanActivate {
@@ -21,9 +25,9 @@ export class AuthorizedGuard implements CanActivate {
     if (!access_token) throw new UnauthorizedException();
 
     return this.rpcHandlerSvc
-      .sendMessage<ITokenPayload, IAccessToken>(
+      .sendMessage<IValidateAccessRes, IValidateAccessReq>(
         SERVICE_NAMES.AUTHORIZATION,
-        'validate-access',
+        ENDPOINTS.MESSAGES.AUTHORIZATION.VALIDATE_ACCESS,
         {
           access_token,
         },

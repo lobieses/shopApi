@@ -1,5 +1,6 @@
 input PutUpLotInput {
     lotName: String!
+    cost: String!
     quantity: Int!
 }
 
@@ -12,6 +13,7 @@ type Lot {
     lotName: String!
     sellerId: Int!
     sellerName: String!
+    cost: Float!
     quantity: Int!
 }
 

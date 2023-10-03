@@ -1,11 +1,18 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { SignInInput, SignRes, SignUpInput } from '../graphql';
-import { IRefreshToken, ISignInReq, ISignResponse, ISignUpReq } from './types';
 import { finalize, map, Observable } from 'rxjs';
 import { REFRESH_TOKEN_COOKIE_NAME } from './constants';
 import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
 import { IGraphQLContext } from '../common/types';
 import { SERVICE_NAMES } from '../rpc/config/services';
+import {
+  ILogoutReq,
+  IRefreshReq,
+  ISignInReq,
+  ISignResponse,
+  ISignUpReq,
+} from '../rpc/endpoint.types';
+import { ENDPOINTS } from '../rpc/endpoints';
 
 interface IAuthorizationResolver {
   signUp: (data: SignUpInput, context: IGraphQLContext) => Observable<SignRes>;
@@ -29,7 +36,7 @@ export class AuthorizationResolver implements IAuthorizationResolver {
     return this.rpcHandlerSvc
       .sendMessage<ISignResponse, ISignUpReq>(
         SERVICE_NAMES.AUTHORIZATION,
-        'auth.sign-up',
+        ENDPOINTS.MESSAGES.AUTHORIZATION.SIGN_UP,
         data,
       )
       .pipe(
@@ -54,7 +61,7 @@ export class AuthorizationResolver implements IAuthorizationResolver {
     return this.rpcHandlerSvc
       .sendMessage<ISignResponse, ISignInReq>(
         SERVICE_NAMES.AUTHORIZATION,
-        'sign-in',
+        ENDPOINTS.MESSAGES.AUTHORIZATION.SIGN_IN,
         data,
       )
       .pipe(
@@ -76,9 +83,13 @@ export class AuthorizationResolver implements IAuthorizationResolver {
     const { refresh_token } = context.req.cookies;
 
     return this.rpcHandlerSvc
-      .sendMessage<void, IRefreshToken>(SERVICE_NAMES.AUTHORIZATION, 'logout', {
-        refresh_token,
-      })
+      .sendMessage<void, ILogoutReq>(
+        SERVICE_NAMES.AUTHORIZATION,
+        ENDPOINTS.MESSAGES.AUTHORIZATION.LOGOUT,
+        {
+          refresh_token,
+        },
+      )
       .pipe(finalize(() => context.res.clearCookie(REFRESH_TOKEN_COOKIE_NAME)));
   }
 
@@ -87,9 +98,9 @@ export class AuthorizationResolver implements IAuthorizationResolver {
     const { refresh_token } = context.req.cookies;
 
     return this.rpcHandlerSvc
-      .sendMessage<ISignResponse, IRefreshToken>(
+      .sendMessage<ISignResponse, IRefreshReq>(
         SERVICE_NAMES.AUTHORIZATION,
-        'refresh',
+        ENDPOINTS.MESSAGES.AUTHORIZATION.REFRESH,
         {
           refresh_token,
         },

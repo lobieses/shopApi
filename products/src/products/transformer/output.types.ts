@@ -3,5 +3,6 @@ export interface ILotResponse {
   lotName: string;
   sellerId: number;
   sellerName: string;
+  cost: number;
   quantity: number;
 }

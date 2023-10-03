@@ -3,12 +3,16 @@ import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
 import { SERVICE_NAMES } from '../rpc/config/services';
 import { GetPaymentCheckoutSessionInput } from '../graphql';
 import { Observable } from 'rxjs';
-import { GetProductSessionRes } from '../rpc/endpoint.types';
+import {
+  GetCheckoutSessionReq,
+  GetProductSessionRes,
+} from '../rpc/endpoint.types';
+import { ENDPOINTS } from '../rpc/endpoints';
 
 interface IPaymentsResolver {
   getPaymentCheckoutSession: (
     data: GetPaymentCheckoutSessionInput,
-  ) => Observable<any>;
+  ) => Observable<GetProductSessionRes>;
 }
 
 @Resolver()
@@ -21,7 +25,11 @@ export class PaymentsResolver implements IPaymentsResolver {
   ) {
     return this.rpcHandlerSvc.sendMessage<
       GetProductSessionRes,
-      GetPaymentCheckoutSessionInput
-    >(SERVICE_NAMES.PAYMENTS, 'payments.get-product-payment-session', data);
+      GetCheckoutSessionReq
+    >(
+      SERVICE_NAMES.PAYMENTS,
+      ENDPOINTS.MESSAGES.PAYMENTS.GET_PRODUCT_PAYMENT_SESSION,
+      data,
+    );
   }
 }

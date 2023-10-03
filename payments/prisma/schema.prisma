@@ -15,3 +15,12 @@ model PreparedLots {
   lotId   Int    @db.Integer
   priceId String @db.Text
 }
+
+model PaymentHistory {
+  id          Int     @id @default(autoincrement())
+  lotId       Int     @db.Integer
+  quantity    Int     @db.Integer
+  buyerId     Int     @db.Integer
+  sellerId    Int     @db.Integer
+  totalAmount Decimal @db.Decimal
+}

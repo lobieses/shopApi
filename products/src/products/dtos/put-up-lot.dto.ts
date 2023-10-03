@@ -6,8 +6,10 @@ import {
   MaxLength,
   Min,
   MinLength,
+  IsNumberString,
 } from 'class-validator';
-import { UserFromTokenDto } from '../../common/dto/user-from-token.dto';
+import { UserFromTokenDto } from '../../common/dtos/user-from-token.dto';
+import { IsValidPrice } from '../../common/custom-validators/is-valid-price.validator';
 
 export class PutUpLotDto extends UserFromTokenDto {
   @IsDefined()
@@ -15,6 +17,11 @@ export class PutUpLotDto extends UserFromTokenDto {
   @MinLength(1)
   @IsString()
   lotName: string;
+
+  @IsDefined()
+  @IsValidPrice(1)
+  @IsNumberString()
+  cost: string;
 
   @IsDefined()
   @Max(1000)

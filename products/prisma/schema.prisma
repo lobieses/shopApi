@@ -11,9 +11,10 @@ datasource db {
 }
 
 model Products {
-  id         Int    @id @default(autoincrement())
-  sellerId   Int    @db.Integer
-  sellerName String @db.Text
-  lotName    String @db.Text
-  quantity   Int    @db.Integer
+  id         Int     @id @default(autoincrement())
+  sellerId   Int     @db.Integer
+  sellerName String  @db.Text
+  lotName    String  @db.Text
+  cost       Decimal @db.Decimal()
+  quantity   Int     @db.Integer
 }

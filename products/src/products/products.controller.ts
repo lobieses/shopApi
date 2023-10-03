@@ -7,30 +7,39 @@ import { GetLotsListDto } from './dtos/get-lots-list.dto';
 import { ILotResponse } from './transformer/output.types';
 import { SalesmanGuard } from '../common/guards/salesman.guard';
 import { GetLotDto } from './dtos/get-lot.dto';
+import { ChangeQuantityDto } from './dtos/change-quantity.dto';
+import { ENDPOINTS } from '../rpc/endpoints';
 
 interface IProductsController {
   getLotsList: (data: GetLotsListDto) => Promise<ILotResponse[]>;
   getLot: (data: GetLotDto) => Promise<ILotResponse | null>;
   putUpLot: (data: PutUpLotDto) => Promise<ILotResponse>;
+  changeQuantity: (data: ChangeQuantityDto) => Promise<ILotResponse>;
 }
 
 @Controller('products')
 export class ProductsController implements IProductsController {
   constructor(private readonly productsHandler: ProductsHandler) {}
 
-  @MessagePattern('products.get-lots-list')
+  @MessagePattern(ENDPOINTS.MESSAGES.PRODUCTS.GET_LOTS_LIST)
   public async getLotsList(@Payload() data: GetLotsListDto) {
     return this.productsHandler.getLotsList(data);
   }
 
-  @MessagePattern('products.get-lot')
+  @MessagePattern(ENDPOINTS.MESSAGES.PRODUCTS.GET_LOT)
   public async getLot(@Payload() data: GetLotDto) {
     return this.productsHandler.getLot(data);
   }
 
   @UseGuards(AuthorizedGuard, SalesmanGuard)
-  @MessagePattern('products.put-up-lot')
+  @MessagePattern(ENDPOINTS.MESSAGES.PRODUCTS.PUT_UP_LOT)
   public async putUpLot(@Payload() data: PutUpLotDto) {
     return this.productsHandler.createLot(data);
+  }
+
+  @UseGuards(AuthorizedGuard)
+  @MessagePattern(ENDPOINTS.MESSAGES.PRODUCTS.CHANGE_QUANTITY)
+  public async changeQuantity(@Payload() data: ChangeQuantityDto) {
+    return this.productsHandler.changeQuantity(data);
   }
 }
