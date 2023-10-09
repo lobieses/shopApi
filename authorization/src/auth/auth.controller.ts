@@ -6,10 +6,22 @@ import { AccessTokenGuard } from '../common/guards/access-token.guard';
 import { ILogoutData, IRefreshData, IValidateAccessData } from './types';
 import { RefreshTokenGuard } from '../common/guards/refresh-token.guard';
 import { signUpDto } from './dtos/sign-up.dto';
-import { ENDPOINTS } from '../common/endpoints';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
+import {
+  ITokens,
+  ITokenPayload,
+} from '@shop-api/microservices/authorization-types';
+
+interface IAuthController {
+  signUp: (data: signUpDto) => Promise<ITokens>;
+  signIn: (data: signInDto) => Promise<ITokens>;
+  logout: (data: ILogoutData) => Promise<void>;
+  refresh: (data: IRefreshData) => Promise<ITokens>;
+  validateAccess: (data: IValidateAccessData) => Promise<ITokenPayload>;
+}
 
 @Controller('auth')
-export class AuthController {
+export class AuthController implements IAuthController {
   constructor(private readonly authSvc: AuthHandler) {}
 
   @MessagePattern(ENDPOINTS.MESSAGES.AUTHORIZATION.SIGN_UP)

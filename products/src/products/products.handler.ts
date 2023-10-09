@@ -2,20 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { PutUpLotDto } from './dtos/put-up-lot.dto';
 import { ProductsService } from './services/products.service';
 import { GetLotsListDto } from './dtos/get-lots-list.dto';
-import { ILotResponse } from './transformer/output.types';
 import { ProductsTransformerService } from './transformer/product.transformer';
-import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
-import { SERVICE_NAMES } from '../rpc/config/services';
+import { RpcHandlerSvc } from '@shop-api/microservices/rpc';
+import { SERVICE_NAMES } from '../rpc/config';
 import { GetLotDto } from './dtos/get-lot.dto';
 import { ChangeQuantityDto } from './dtos/change-quantity.dto';
-import { ENDPOINTS } from '../rpc/endpoints';
-import { ILotCreatedEventReq } from '../rpc/endpoint.types';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
+import { ILotCreatedEventReq } from '@shop-api/microservices/payments-types';
+import { ILot } from '@shop-api/microservices/products-types';
 
 interface IProductsHandler {
-  getLotsList: (data: GetLotsListDto) => Promise<ILotResponse[]>;
-  getLot: (data: GetLotDto) => Promise<ILotResponse | null>;
-  createLot: (data: PutUpLotDto) => Promise<ILotResponse>;
-  changeQuantity: (data: ChangeQuantityDto) => Promise<ILotResponse>;
+  getLotsList: (data: GetLotsListDto) => Promise<ILot[]>;
+  getLot: (data: GetLotDto) => Promise<ILot | null>;
+  createLot: (data: PutUpLotDto) => Promise<ILot>;
+  changeQuantity: (data: ChangeQuantityDto) => Promise<ILot>;
 }
 
 @Injectable()

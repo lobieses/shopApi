@@ -1,19 +1,19 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GeLotsListInput, PutUpLotInput } from '../graphql';
-import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
+import { RpcHandlerSvc } from '@shop-api/microservices/gateway';
 import { SERVICE_NAMES } from '../rpc/config/services';
 import { Observable } from 'rxjs';
-import { ENDPOINTS } from '../rpc/endpoints';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
 import {
   GetLotListRes,
   IGetLotListReq,
   IPutUpLotReq,
-  PutUpLotRes,
-} from '../rpc/endpoint.types';
+  IPutUpLotRes,
+} from '@shop-api/microservices/products-types';
 
 interface IProductsResolver {
   getLotsList: (data: GeLotsListInput) => Observable<GetLotListRes>;
-  putUpLot: (data: PutUpLotInput) => Observable<PutUpLotRes>;
+  putUpLot: (data: PutUpLotInput) => Observable<IPutUpLotRes>;
 }
 
 @Resolver()
@@ -32,7 +32,7 @@ export class ProductsResolver implements IProductsResolver {
 
   @Mutation()
   public putUpLot(@Args('data') data: PutUpLotInput) {
-    return this.rpcHandlerSvc.sendMessage<PutUpLotRes, IPutUpLotReq>(
+    return this.rpcHandlerSvc.sendMessage<IPutUpLotRes, IPutUpLotReq>(
       SERVICE_NAMES.PRODUCTS,
       ENDPOINTS.MESSAGES.PRODUCTS.PUT_UP_LOT,
       data,

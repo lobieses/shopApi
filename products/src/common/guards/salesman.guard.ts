@@ -4,7 +4,7 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { Kinds } from '../types';
+import { Kinds } from '@shop-api/microservices/authorization-types';
 
 @Injectable()
 export class SalesmanGuard implements CanActivate {

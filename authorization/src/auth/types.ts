@@ -1,9 +1,9 @@
 import {
+  ITokens,
+  ITokenPayload,
   IAccessToken,
   IRefreshToken,
-  ITokenPayload,
-  ITokens,
-} from '../jwt/types';
+} from '@shop-api/microservices/authorization-types';
 
 export interface ISignResponse extends ITokens {
   refresh_expire_in_milliseconds: number;

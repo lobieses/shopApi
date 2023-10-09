@@ -2,7 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { IRefreshToken, ITokenPayload } from '../types';
+import {
+  IRefreshToken,
+  ITokenPayload,
+} from '@shop-api/microservices/authorization-types';
 import { JWTService } from './jwt.service';
 
 @Injectable()

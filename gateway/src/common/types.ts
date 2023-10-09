@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ITokenPayload } from '../authorization/types';
+import { ITokenPayload } from '@shop-api/microservices/authorization-types';
 
 interface IAuthenticatedReq extends Request {
   user?: ITokenPayload;

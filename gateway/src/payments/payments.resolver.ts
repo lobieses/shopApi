@@ -1,18 +1,18 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
+import { RpcHandlerSvc } from '@shop-api/microservices/gateway';
 import { SERVICE_NAMES } from '../rpc/config/services';
 import { GetPaymentCheckoutSessionInput } from '../graphql';
 import { Observable } from 'rxjs';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
 import {
-  GetCheckoutSessionReq,
-  GetProductSessionRes,
-} from '../rpc/endpoint.types';
-import { ENDPOINTS } from '../rpc/endpoints';
+  GetPaymentCheckoutSessionRes,
+  IGetPaymentCheckoutSessionReq,
+} from '@shop-api/microservices/payments-types';
 
 interface IPaymentsResolver {
   getPaymentCheckoutSession: (
     data: GetPaymentCheckoutSessionInput,
-  ) => Observable<GetProductSessionRes>;
+  ) => Observable<GetPaymentCheckoutSessionRes>;
 }
 
 @Resolver()
@@ -24,8 +24,8 @@ export class PaymentsResolver implements IPaymentsResolver {
     @Args('data') data: GetPaymentCheckoutSessionInput,
   ) {
     return this.rpcHandlerSvc.sendMessage<
-      GetProductSessionRes,
-      GetCheckoutSessionReq
+      GetPaymentCheckoutSessionRes,
+      IGetPaymentCheckoutSessionReq
     >(
       SERVICE_NAMES.PAYMENTS,
       ENDPOINTS.MESSAGES.PAYMENTS.GET_PRODUCT_PAYMENT_SESSION,

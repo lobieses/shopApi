@@ -1,6 +1,6 @@
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { RpcHandlerSvc } from './services/rpc-handler.service';
-import { IServiceConfig } from './config/services';
+import { IServiceConfig } from '@shop-api/microservices/rpc';
 import { ClientProxyFactory } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { configFactory } from './config/config.factory';

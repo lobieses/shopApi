@@ -7,7 +7,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { IsValidPrice } from '../../common/custom-validators/is-valid-price.validator';
+import { IsValidPrice } from '@shop-api/microservices/common';
 
 export class ProductCreatedDto {
   @IsDefined()

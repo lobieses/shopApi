@@ -8,8 +8,7 @@ import {
   MinLength,
   IsNumberString,
 } from 'class-validator';
-import { UserFromTokenDto } from '../../common/dtos/user-from-token.dto';
-import { IsValidPrice } from '../../common/custom-validators/is-valid-price.validator';
+import { IsValidPrice, UserFromTokenDto } from '@shop-api/microservices/common';
 
 export class PutUpLotDto extends UserFromTokenDto {
   @IsDefined()

@@ -1,4 +1,4 @@
-import { IServiceConfig } from './services';
+import { IServiceConfig } from '@shop-api/microservices/rpc';
 import { Transport } from '@nestjs/microservices';
 import { AmqpConnectionManagerSocketOptions } from '@nestjs/microservices/external/rmq-url.interface';
 import { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';

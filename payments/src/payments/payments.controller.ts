@@ -3,18 +3,19 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { PaymentsHandler } from './payments.handler';
 import { ProductCreatedDto } from './dtos/product-created.dto';
 import { GetProductPaymentSessionDto } from './dtos/get-product-payment-session.dto';
-import { AuthorizedGuard } from '../common/guards/authorized.guard';
 import { ExpiredSessionDto } from './dtos/expired-session.dto';
 import { SuccessPaymentDto } from './dtos/success-payment.dto';
-import { ENDPOINTS } from '../rpc/endpoints';
+import { AuthorizedGuard } from '@shop-api/microservices/common';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
+import { GetPaymentCheckoutSessionRes } from '@shop-api/microservices/payments-types';
 
 interface IPaymentsController {
   getProductPaymentSession: (
     data: GetProductPaymentSessionDto,
-  ) => Promise<string>;
+  ) => Promise<GetPaymentCheckoutSessionRes>;
   lotCreated: (data: ProductCreatedDto) => Promise<void>;
   expiredSession: (data: ExpiredSessionDto) => Promise<void>;
-  successPayment: (data: any) => Promise<void>;
+  successPayment: (data: SuccessPaymentDto) => Promise<void>;
 }
 
 @Controller('payments')

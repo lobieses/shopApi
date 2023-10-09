@@ -1,5 +1,5 @@
 import { IsDefined, IsNumber, Min } from 'class-validator';
-import { UserFromTokenDto } from '../../common/dtos/user-from-token.dto';
+import { UserFromTokenDto } from '@shop-api/microservices/common';
 
 export class GetProductPaymentSessionDto extends UserFromTokenDto {
   @IsDefined()

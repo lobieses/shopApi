@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { UserKind } from '@prisma/client';
+import { Kinds } from '@shop-api/microservices/authorization-types';
 
 export class signUpDto {
   @IsDefined()
@@ -19,7 +19,7 @@ export class signUpDto {
   password: string;
 
   @IsDefined()
-  @IsEnum(UserKind)
+  @IsEnum(Kinds)
   @IsString()
-  kind: UserKind;
+  kind: Kinds;
 }

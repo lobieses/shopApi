@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ITokenPayload, ITokens } from '../types';
+import {
+  ITokenPayload,
+  ITokens,
+} from '@shop-api/microservices/authorization-types';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtTokens } from '@prisma/client';
 

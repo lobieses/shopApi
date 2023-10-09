@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MainModule } from './main.module';
 import { RmqOptions, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { RpcValidationFilter } from './common/exception-filters/rpc-exception.filter';
+import { RpcValidationFilter } from '@shop-api/microservices/common';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {

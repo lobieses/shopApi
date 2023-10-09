@@ -1,0 +1,1 @@
+# This package contains common components and types for shopApi microservices

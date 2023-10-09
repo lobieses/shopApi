@@ -8,6 +8,7 @@ import {
   REFRESH_EXPIRE_IN_MILLISECONDS,
 } from '../jwt/services/jwt.service';
 import { signUpDto } from './dtos/sign-up.dto';
+import { Kinds } from '@shop-api/microservices/authorization-types';
 
 interface IAuthHandler {
   signUp: (data: signUpDto) => Promise<ISignResponse>;
@@ -68,7 +69,7 @@ export class AuthHandler implements IAuthHandler {
     const { access_token, refresh_token } = this.jwtService.generateTokens({
       id: existingUser.id,
       name,
-      kind: existingUser.kind,
+      kind: existingUser.kind as Kinds,
     });
 
     await this.jwtService.saveRefreshToken(existingUser.id, refresh_token);
@@ -94,7 +95,7 @@ export class AuthHandler implements IAuthHandler {
     const { access_token, refresh_token } = this.jwtService.generateTokens({
       id,
       name,
-      kind: user.kind,
+      kind: user.kind as Kinds,
     });
 
     await this.jwtService.saveRefreshToken(id, refresh_token);

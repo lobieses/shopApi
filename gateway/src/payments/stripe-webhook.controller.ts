@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
+import { RpcHandlerSvc } from '@shop-api/microservices/gateway';
 import { Stripe } from 'stripe';
+import { SERVICE_NAMES } from '../rpc/config/services';
+import { ISessionMetadata } from './types';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
 import {
   IExpiredSessionEventReq,
   ISuccessPaymentEventReq,
-} from '../rpc/endpoint.types';
-import { SERVICE_NAMES } from '../rpc/config/services';
-import { ISessionMetadata } from './types';
-import { ENDPOINTS } from '../rpc/endpoints';
+} from '@shop-api/microservices/payments-types';
 
 interface IStripeWebhookController {
   stripeWebhook: (event: Stripe.Event) => void;

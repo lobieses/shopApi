@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthorizationModule } from './authorization/authorization.module';
-import { RpcModule } from './rpc/rpc.module';
+import { RpcModule } from '@shop-api/microservices/gateway';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { SERVICES } from './rpc/config/services';
@@ -14,7 +14,11 @@ import { GraphqlModuleOptions } from './common/configs/graphql.config';
     GraphQLModule.forRoot<ApolloDriverConfig>(GraphqlModuleOptions),
     ConfigModule.forRoot({ isGlobal: true }),
     AuthorizationModule,
-    RpcModule.forRoot(SERVICES),
+    RpcModule.forRoot({
+      RMQ_URL: process.env.RMQ_URL,
+      services: SERVICES,
+      isGlobal: true,
+    }),
     ProductsModule,
     PaymentsModule,
   ],

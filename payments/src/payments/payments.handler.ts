@@ -7,18 +7,18 @@ import { StripeService } from '../stripe/services/stripe.service';
 import { ProductCreatedDto } from './dtos/product-created.dto';
 import { GetProductPaymentSessionDto } from './dtos/get-product-payment-session.dto';
 import { PaymentsService } from './services/payments.service';
-import { RpcHandlerSvc } from '../rpc/services/rpc-handler.service';
-import { SERVICE_NAMES } from '../rpc/config/services';
+import { RpcHandlerSvc } from '@shop-api/microservices/rpc';
+import { SERVICE_NAMES } from '../rpc/config';
 import { firstValueFrom } from 'rxjs';
 import {
-  GetLotRes,
+  IGetLotRes,
   IChangeQuantityReq,
   IGetLotReq,
   IChangeQuantityRes,
-} from '../rpc/endpoint.types';
+} from '@shop-api/microservices/products-types';
 import { ExpiredSessionDto } from './dtos/expired-session.dto';
 import { SuccessPaymentDto } from './dtos/success-payment.dto';
-import { ENDPOINTS } from '../rpc/endpoints';
+import { ENDPOINTS } from '@shop-api/microservices/endpoints';
 
 interface IPaymentsHandler {
   createCheckoutSession: (data: GetProductPaymentSessionDto) => Promise<string>;
@@ -35,15 +35,16 @@ export class PaymentsHandler implements IPaymentsHandler {
     private readonly rpcHandlerService: RpcHandlerSvc,
   ) {}
 
-  public async createCheckoutSession(data: GetProductPaymentSessionDto) {
+  public async createCheckoutSession(
+    data: GetProductPaymentSessionDto,
+  ): Promise<string> {
     const { lotId, quantity, user } = data;
 
     const preparedLots = await this.paymentsService.findPreparedLotByLotId(
       lotId,
     );
-
     const lot = await firstValueFrom(
-      this.rpcHandlerService.sendMessage<GetLotRes, IGetLotReq>(
+      this.rpcHandlerService.sendMessage<IGetLotRes, IGetLotReq>(
         SERVICE_NAMES.PRODUCTS,
         ENDPOINTS.MESSAGES.PRODUCTS.GET_LOT,
         { lotId },

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { Products } from '@prisma/client';
-import { ILotResponse } from './output.types';
+import { ILot } from '@shop-api/microservices/products-types';
 
 interface IProductsTransformerService {
-  toLotsList: (data: Products[]) => ILotResponse[];
-  toLot: (data: Products) => ILotResponse;
+  toLotsList: (data: Products[]) => ILot[];
+  toLot: (data: Products) => ILot;
 }
 
 @Injectable()
 export class ProductsTransformerService implements IProductsTransformerService {
   public toLotsList(data: Products[]) {
-    return data.map<ILotResponse>(
+    return data.map<ILot>(
       ({ id, lotName, sellerId, sellerName, quantity, cost }) => ({
         id,
         lotName,
@@ -32,6 +32,6 @@ export class ProductsTransformerService implements IProductsTransformerService {
       sellerName,
       cost: cost.toNumber(),
       quantity,
-    } as ILotResponse;
+    } as ILot;
   }
 }

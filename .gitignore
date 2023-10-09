@@ -2,10 +2,8 @@
 .env
 
 # compiled output
-/dist
-*/dist
-/node_modules
-*/node_modules
+**/dist
+**/node_modules
 
 #graphql definitions
 */src/graphql.ts

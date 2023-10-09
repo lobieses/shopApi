@@ -4,7 +4,6 @@ import {
   Injectable,
   InternalServerErrorException,
   OnModuleInit,
-  Scope,
 } from '@nestjs/common';
 import { catchError, map, Observable } from 'rxjs';
 import {
@@ -15,7 +14,7 @@ import {
 import { SERVICE_NAMES } from '../config/services';
 import { RpcException } from '../../common/exceptions/rpc.exception';
 import { CONTEXT } from '@nestjs/graphql';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 interface IRpcHandlerSvc {
   sendMessage: <R, I>(
@@ -28,7 +27,7 @@ interface IRpcHandlerSvc {
   emitEvent: <I>(services: SERVICE_NAMES[], pattern: any, body?: I) => any;
 }
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class RpcHandlerSvc implements IRpcHandlerSvc, OnModuleInit {
   constructor(
     @Inject('SERVICE_CLIENTS')

@@ -28,7 +28,8 @@
     "prisma": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "stripe": "^13.5.0"
+    "stripe": "^13.5.0",
+    "@shop-api/microservices": "../packages/microservices/lib/shop-api-microservices-v1.1.4.tgz"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
